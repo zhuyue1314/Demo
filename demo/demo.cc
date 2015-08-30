@@ -5,7 +5,7 @@
  */
 
 /*
- * This file waits 2.5 seconds for something appear on standard input
+ * Description:
  */
 
 #include <iostream>
