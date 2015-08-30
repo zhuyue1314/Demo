@@ -1,7 +1,7 @@
 all: demo
 
-demo: demo.cc
-	g++ demo.cc -o demo
+demo: src/demo.cc
+	g++ src/demo.cc -o demo
 
 clean:
 	rm -rf demo
