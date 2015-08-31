@@ -8,6 +8,7 @@
  * Description: This is a simple TCP socket server
  */
 
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -49,7 +50,6 @@ static void init_server_addr(struct sockaddr_in *server_addr, const char *port)
 
 static void talk_with_client(const int client_sockfd)
 {
-cout << "talk_with_client(" << client_sockfd << ")" << endl;
 	char buffer[BUFFER_SIZE];
 	bzero(buffer, sizeof(buffer));
 
@@ -78,6 +78,11 @@ int main(int argc, char **argv)
 		usage();
 		return -1;
 	}
+
+	// If the action for the SIGCHLD signal is set to SIG_IGN, child processes
+	// of the calling processes shall not be transformed into zombie processes
+	// when they terminate.
+	signal(SIGCHLD, SIG_IGN);
 
 	const int sockfd = socket(AF_INET, SOCK_STREAM, 0);
 	if (sockfd < 0)
