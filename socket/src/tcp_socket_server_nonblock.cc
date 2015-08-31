@@ -1,7 +1,7 @@
 /*
  * Author   : Kai Zhao
  * Email    : loverszhao@gmail.com
- * Reference: http://www.linuxhowtos.org/data/6/server.c
+ * Reference: http://velep.com/archives/1137.html
  */
 
 /*
