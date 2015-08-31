@@ -23,77 +23,23 @@
 using std::cout;
 using std::endl;
 
-UdpSocketServer::UdpSocketServer()
-{
-	sockfd = -1;
-}
-
-UdpSocketServer::~UdpSocketServer()
-{
-	if (sockfd != -1)
-		close(sockfd);
-}
-
-int UdpSocketServer::create_socket()
-{
-	cout << "UdpSocketServer::create_socket()" << endl;
-
-	sockfd = socket(AF_INET, SOCK_DGRAM, 0);
-	if (sockfd < 0) {
-		perror("socket() failed");
-		return -1;
-	}
-
-	cout << "\tsockfd=" << sockfd << endl;
-
-	return 0;
-}
-
 int UdpSocketServer::bind(const int port)
 {
 	cout << "UdpSocketServer::bind(port=" << port << ")" << endl;
 
-	struct sockaddr_in addr;
+	struct sockaddr_in local_addr;
 
-	memset((char*)&addr, 0, sizeof(addr));
-	addr.sin_family = AF_INET;
-	addr.sin_addr.s_addr = htonl(INADDR_ANY);
-	addr.sin_port = htons(port);
+	memset((char*)&local_addr, 0, sizeof(local_addr));
+	local_addr.sin_family = AF_INET;
+	local_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+	local_addr.sin_port = htons(port);
 
-	if (::bind(sockfd, (struct sockaddr *)&addr, sizeof(addr)) == -1) {
+	if (::bind(sockfd, (struct sockaddr *)&local_addr, sizeof(local_addr)) == -1) {
 		perror("bind() failed");
 		return -1;
 	}
 	cout << "\tbind() ok" << endl;
 
-	return 0;
-}
-
-int UdpSocketServer::recv()
-{
-	char buf[1024];
-	socklen_t addrlen = sizeof(client_addr);
-
-	int len = recvfrom(sockfd, buf, sizeof(buf), 0,
-					(struct sockaddr *)&client_addr, &addrlen);
-	if (len == -1) {
-		perror("recv() failed");
-		cout << "sockfd=" << sockfd << endl;
-		return -1;
-	}
-	buf[len] = 0;
-	cout << "Get message: " << buf << endl;
-
-	return 0;
-}
-
-int UdpSocketServer::send(const char *buf, const int size)
-{
-	if (sendto(sockfd, buf, size, 0, (struct sockaddr *)&client_addr,
-			sizeof(client_addr)) == -1) {
-		perror("sendto() failed");
-		return -1;
-	}
 	return 0;
 }
 
