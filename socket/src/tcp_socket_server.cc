@@ -5,7 +5,7 @@
  */
 
 /*
- * Description: This is TCP socket server
+ * Description: This is a simple TCP socket server
  */
 
 #include <stdio.h>
@@ -50,7 +50,7 @@ static void init_server_addr(struct sockaddr_in *server_addr, const char *port)
 int main(int argc, char **argv)
 {
 	cout << "======================================================" << endl;
-	cout << "\tThis is a demo project for TCP socket" << endl;
+	cout << "\tThis is a demo project for TCP socket server" << endl;
 	cout << "======================================================" << endl;
 
 	if (argc != 2) {
@@ -74,7 +74,7 @@ int main(int argc, char **argv)
 	socklen_t client_len;
 	struct sockaddr_in client_addr;
 
-	cout << "\tTCP server is accepting" << endl;
+	cout << "[s] TCP server is accepting" << endl;
 
 	const int client_sockfd = accept(sockfd, (struct sockaddr *)&client_addr, &client_len);
 	if (client_sockfd < 0)
@@ -87,9 +87,10 @@ int main(int argc, char **argv)
 	if (nrbytes < 0)
 		error("ERROR reading from the client");
 
-	cout << "Get message from the client: " << buffer << endl;
+	cout << "[s] Get message from the client: " << buffer << endl;
+	bzero(buffer, sizeof(buffer));
 
-	cout << "Please enter the message you want to send to the client:" << endl;
+	cout << "[s] Please enter the message you want to send to the client:" << endl;
 	fgets(buffer, sizeof(buffer), stdin);
 
 	const int nwbytes = write(client_sockfd, buffer, strlen(buffer));

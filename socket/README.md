@@ -30,5 +30,20 @@ this is from client
 ```
 $ make
 $ ./tcp_socket_server 2000
+======================================================
+	This is a demo project for TCP socket server
+======================================================
+[s] TCP server is accepting
+[s] Get message from the client: hello this is bunnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
 
+[s] Please enter the message you want to send to the client:
+hello sss max os X
+
+$ ./tcp_socket_client 127.0.0.1 2000
+======================================================
+	This is a demo project for TCP socket client
+======================================================
+[c] Please enter the message which will be sent to the server:
+hello this is bunnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+[c] Get message from the server: hello sss max os X
 ```
