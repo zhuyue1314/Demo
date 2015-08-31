@@ -24,3 +24,11 @@ UdpSocketClient::connect(dst_ip='127.0.0.1', dst_port=2000)
 this is from client
 [c] Client is waiting message from server
 ```
+
+### 1.2 TCP socket
+
+```
+$ make
+$ ./tcp_socket_server 2000
+
+```
