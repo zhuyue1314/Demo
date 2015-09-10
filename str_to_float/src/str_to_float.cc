@@ -60,14 +60,12 @@ float str_to_float(const char *pstr)
 	long long integer = 0;
 	// The value of decimals
 	double decimal = 0;
-	// Number of decimal
-	int dec_num = 0;
+	// The multiple of next decimal
+	double dec_num = 0.1;
 	// Has found dot '.'
 	bool has_dot = 0;
 	// Has integer
 	bool has_integer = 0;
-	// Has decimal
-	bool has_decimal = 0;
 
 	if (pstr == NULL)
 		return 0;
@@ -110,13 +108,11 @@ float str_to_float(const char *pstr)
 				return 0;
 			} else {
 				// "123.456"
-				has_decimal = 1;
-
-				dec_num++;
-				if (dec_num > 20) {
+				if (dec_num < (double)1e-10) {
 					// There are too many decimals, ignore the following decimals
 				} else {
-					decimal += (*str - '0') * pow(0.1, dec_num);
+					decimal += (*str - '0') * dec_num;
+					dec_num *= 0.1;
 				}
 			}
 
@@ -138,7 +134,7 @@ float str_to_float(const char *pstr)
 		str++;
 	}
 
-	if (!has_integer || (has_dot && !has_decimal)) {
+	if (has_dot && (!has_integer || dec_num == 0.1)) {
 		// e.g. ".123" or "123." or "."
 		last_err_code = 2;
 		return 0;
@@ -154,7 +150,7 @@ int main()
 {
 	const struct TestCase {
 		const char *str;
-		float ret;
+		const float ret;
 		int last_err_code;
 	} test_cases[] = {
 		// last_err_code != 0
@@ -175,6 +171,8 @@ int main()
 		// last_err_code == 0
 		{ "", 0, 0 },
 		{ "123.456", 123.456, 0 },
+		// There are too many decimals
+		{ "1.12345678901234567890", 1.12345678, 0 },
 	};
 
 	int errors = 0;
